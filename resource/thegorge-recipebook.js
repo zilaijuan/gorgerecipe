@@ -85,7 +85,8 @@ function GetDishes() {
 
 function FillList() {
     var recipe_container_elem = $(".recipelist-dishes");
-    recipe_container_elem.html("");
+    //recipe_container_elem.html("");
+    $("#tbody").html("");
     var cravingsS = $("#cravings");
     var stationS = $("#station");
     var needC = cravingsS.val();
@@ -93,18 +94,96 @@ function FillList() {
     for (var i = 1; i <= recipe_count; i++) {
 
         if(discovered_dishes[i] != null){
-        if(needC !="cravings"){
-            console.log(discovered_dishes[i].name + ":" +discovered_dishes[i].cravings);
-            if(!in_array(needC , discovered_dishes[i].cravings)){
-                continue;
+	        if(needC !="cravings"){
+	            console.log(discovered_dishes[i].name + ":" +discovered_dishes[i].cravings);
+	            if(!in_array(needC , discovered_dishes[i].cravings)){
+	                continue;
+	            }
+	        }
+	        if(needS !="station"){
+	            if(!in_array(needS , discovered_dishes[i].station)){
+	                continue;
+	            }
+	        }
+        }
+//        $("#tbody").append(
+//        		"<tr><td><span class='dish-icon' style='background-image: url(" + discovered_dishes[i].image + ");'></span></td></tr>"
+//        );
+        var tr = document.createElement("tr");
+        var td1 = document.createElement("td");
+        var td2 = document.createElement("td");
+        var html=' <div class="dish-attribute-content ">';
+        if(discovered_dishes[i].coins[3]>0){
+            html = html + ' <div class="coin4 visible" title="Gnaw \'s Favor"><span class="value">'+discovered_dishes[i].coins[3]+'</span><span class="icon"></span></div>';
+        }
+        if(discovered_dishes[i].coins[2]>0){
+            html = html + ' <div class="coin3 visible" title="Red Mark"><span class="value">'+discovered_dishes[i].coins[2]+'</span><span class="icon"></span></div>';
+        }
+        if(discovered_dishes[i].coins[1]>0){
+            html = html + '<div class="coin2 visible" title="Sapphire Medallion"><span class="value">'+discovered_dishes[i].coins[1]+'</span><span class="icon"></span></div>';
+        }
+        if(discovered_dishes[i].coins[0]>0){
+            html = html + '<div class="coin1 visible" title="Old Coin"><span class="value">'+discovered_dishes[i].coins[0]+'</span><span class="icon"></span></div>';
+        }
+        html = html + '<div class="empty" style="display: none;">None</div>'
+                                               + '</div>';
+        $(td2).append(html);
+        var td3 = document.createElement("td");
+        html=' <div class="dish-attribute-content ">';
+        if(discovered_dishes[i].silver_coins[3]>0){
+            html = html + ' <div class="coin4 visible" title="Gnaw \'s Favor"><span class="value">'+discovered_dishes[i].silver_coins[3]+'</span><span class="icon"></span></div>';
+        }
+        if(discovered_dishes[i].silver_coins[2]>0){
+            html = html + ' <div class="coin3 visible" title="Red Mark"><span class="value">'+discovered_dishes[i].silver_coins[2]+'</span><span class="icon"></span></div>';
+        }
+        if(discovered_dishes[i].silver_coins[1]>0){
+            html = html + '<div class="coin2 visible" title="Sapphire Medallion"><span class="value">'+discovered_dishes[i].silver_coins[1]+'</span><span class="icon"></span></div>';
+        }
+        if(discovered_dishes[i].silver_coins[0]>0){
+            html = html + '<div class="coin1 visible" title="Old Coin"><span class="value">'+discovered_dishes[i].silver_coins[0]+'</span><span class="icon"></span></div>';
+        }
+        html = html + '<div class="empty" style="display: none;">None</div>'
+                                               + '</div>';
+        $(td3).append(html);
+        var td4 = document.createElement("td");
+        var cravings_text = "";
+        if (discovered_dishes[i].cravings) {
+            for (var craving_index = 0; craving_index < discovered_dishes[i].cravings.length; craving_index++) {
+                cravings_text += craving_names[discovered_dishes[i].cravings[craving_index]] + ", ";
             }
         }
-        if(needS !="station"){
-            if(!in_array(needS , discovered_dishes[i].station)){
-                continue;
-            }
+        if (cravings_text.length == 0) {
+            cravings_text = (index == 70) ? "None" : "Unknown";
+        } else {
+            cravings_text = cravings_text.substring(0, cravings_text.length - 2);
         }
-}
+        $(td4).append(cravings_text);
+        
+        var td5 = document.createElement("td");
+        var stations_text = "";
+        for (var station_index = 0; station_index < discovered_dishes[i].station.length; station_index++) {
+            stations_text += cooking_station_names[discovered_dishes[i].station[station_index]] + ", ";
+        }
+        stations_text = stations_text.substring(0, stations_text.length - 2);
+        $(td5).append(stations_text);
+        
+        var td6 = document.createElement("td");
+        $(td6).addClass("recipedetails");
+        $(td6).css("border-width","1px");
+        for (var recipe_index = 0; recipe_index < discovered_dishes[i].ingredients.length; recipe_index++) {
+            var recipe = discovered_dishes[i].ingredients[recipe_index];
+            var recipe_html = "<div class='dish-recipe'>";
+            var recipe_pos = (recipe_index > 0) ? (recipe_index + 1) + OrdinalSuffix(recipe_index + 1) + " " : "";
+            recipe_html += "<span class='rank-pos' title='This is the " + recipe_pos + "most popular way to cook this dish.'>" + OrdinalNumber(recipe_index + 1) + "</span>";
+            // Go through the ingredients
+            for (var ingredient_index = 0; ingredient_index < recipe.length; ingredient_index++) {
+                recipe_html += "<span class='ingredient " + recipe[ingredient_index] + "' title='" + ingredient_names[recipe[ingredient_index]] + "'></span>";
+            }
+            recipe_html += "</div>";
+            $(td6).append(recipe_html);
+        }
+        
+        
         var dish = document.createElement("li");
         $(dish).addClass("dish");
         $(dish).attr("dish", i);
@@ -126,7 +205,7 @@ function FillList() {
         var dish_icon_container = document.createElement("div");
         $(dish_icon_container).addClass("icon-container");
         $(dish_icon_container).appendTo($(dish));
-
+       
         var tribute_icon_class = "";
         var tribute_icon_title = "";
         if (discovered_dishes[i] != null) {
@@ -166,9 +245,16 @@ function FillList() {
             $(dish).addClass(dish_size_class);
         }
 
-        $(dish).appendTo($(recipe_container_elem));
-
-        if (i == 35) $(recipe_container_elem).append("<br/>");
+        //$(dish).appendTo($(recipe_container_elem));
+        $(dish).appendTo($(td1));
+        $(td1).appendTo($(tr));
+        $(td2).appendTo($(tr));
+        $(td3).appendTo($(tr));
+        $(td4).appendTo($(tr));
+        $(td5).appendTo($(tr));
+        $(td6).appendTo($(tr));
+        $(tr).appendTo($("#tbody"));
+       // if (i == 35) $(recipe_container_elem).append("<br/>");
     }
 
     $(".recipebook-header-count").text("Discovered Recipes: " + discovered_count + "/" + recipe_count);

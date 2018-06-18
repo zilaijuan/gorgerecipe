@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="./resource/gorgepage.css">
 	<link rel='stylesheet' href='./resource/framework.css' media='all'>
 	<link rel="stylesheet" href="./resource/thegorge-recipebook.css">
+
 </head>
 <body class='ipsApp ipsApp_front ipsJS_has ipsClearfix' data-controller='core.front.core.app' data-message="" data-pageApp='cms' data-pageLocation='front' data-pageModule='pages' data-pageController='page' itemscope itemtype="http://schema.org/WebSite">
 	<main role="main" id="ipsLayout_body" class="ipsLayout_container">
@@ -195,11 +196,15 @@
                                 	<div class="selecting">
                                 		<select class="newSelect" id="cravings">
                                 			<option value="cravings">cravings</option>
-                                			<option value="snack">snack</option>
-                                			<option value="bread">bread</option>
-                                			<option value="veggie">veggie</option>
-                                			<option value="soup">soup</option>
+                                			<option value="snack"> SNACK</option>
+                                			<option value="bread"> BREAD</option>
+                                			<option value="veggie"> VEGETABLES </option>
+                                			<option value="soup"> SOUP</option>
                                 			<option value="fish">fish</option>
+                                            <option value="sweet"> DESSERT</option>
+                                            <option value="pasta"> PASTA </option>
+                                            <option value="meat"> MEAT</option>
+                                            <option value="cheese"> CHEESE</option>
                                 		</select>
                                 		<select class="newSelect" id="station">
                                 			<option value="station">station</option>
@@ -210,10 +215,17 @@
                                 		</select>
                                 	</div>
                                     <img class="recipelist-divider top" src="https://s3.amazonaws.com/kleiforums/GORGE/RecipeBook/images/quagmire_recipe_line.png">
-                                    <ul class="recipelist-dishes"></ul>
+                                   <div style="overflow-y: scroll;max-height: 660px;">	
+                                    <table  class="recipelist-dishes" style="width: 1000px">
+                                    	<tbody id = "tbody">
+                                    	
+                                    	</tbody>
+                                    </table>
+                                    </div>
+                                     <ul class="recipelist-dishes"></ul>
                                     <img class="recipelist-divider bottom " src="https://s3.amazonaws.com/kleiforums/GORGE/RecipeBook/images/quagmire_recipe_line_bottom.png ">
                                 </div>
-                                <div class="recipedetails unknown ">
+                                <div class="recipedetails unknown " style="display:none" >
                                     <h2 class="dish-name ">Unknown</h2>
                                     <img class="dish-name-divider " src="https://s3.amazonaws.com/kleiforums/GORGE/RecipeBook/images/quagmire_recipe_line_break.png ">
                                     <div class="dish-header ">
